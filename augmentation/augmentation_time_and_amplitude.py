@@ -6,6 +6,7 @@ Created on Wed Nov 15 16:30:59 2023
 """
 import numpy as np
 import emd
+from scipy.interpolate import CubicSpline
 
 def amplitude_jitter(epochs_data,
                      noise_power=5,
