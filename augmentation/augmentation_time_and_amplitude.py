@@ -180,4 +180,41 @@ def amplitude_pitcher(epochs_data,
                                  imf_pick)
     else:
         return augmentated_epochs
+    
+    
+def time_warp_spline(epochs_data, time_shift_window=[-15, 15]):
+    """Function that warps epochs data in time domain using cubic splines.
+    
+    Args:
+        epochs_data (numpy.ndarray): 
+            A 3d array of epochs with shapes N_epochs, N_channels, N_timestamps
+        time_window (list):
+            A time window of timestamps in which a shift step is defined.
+            The step is the same for channels within one epoch but
+            vary in epochs; variance is within the time window.
+            
+    Returns:
+        numpy.ndarray: The 3d array of augemented epochs.
+
+    """
+    epochs_accumulator = []
+    for i in range(epochs_data.shape[0]):
+        time_shift = np.random.randint(low=time_shift_window[0], 
+                                    high=time_shift_window[1]
+                                    )
+        single_epoch = epochs_data[i, :, :]
+        channels_accumulator = []
         
+        for channel_idx in range(single_epoch.shape[0]):
+            x = np.arange(single_epoch.shape[1])
+            y = single_epoch[channel_idx, :]
+            cs = CubicSpline(x, y)
+            xs = np.arange(time_shift, len(x)+time_shift, 1)
+            shifted_data = cs(xs)
+            channels_accumulator.append(shifted_data)
+            
+        shifted_epoch = np.stack(channels_accumulator, axis=0)
+        epochs_accumulator.append(shifted_epoch)
+    shifted_data = np.stack(epochs_accumulator, axis=0)
+    
+    return shifted_data
