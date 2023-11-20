@@ -82,8 +82,8 @@ def amplitude_jitter(epochs_data,
                 if win1 > win2:
                     win1, win2 = win2, win1
                     
-                noise_arr = np.random.uniform(-np.abs(np.mean(single_epoch)/(1/noise_power)), 
-                                                np.abs(np.mean(single_epoch)(1/noise_power)), 
+                noise_arr = np.random.uniform(-np.abs(np.mean(single_epoch*noise_power)), 
+                                                np.abs(np.mean(single_epoch*noise_power)), 
                                                 [win2-win1,])
                 
                 template[:, win1:win2] = noise_arr
